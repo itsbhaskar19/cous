@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤍</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('./background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial;
+  overflow-x: hidden;
+}
+
+/* PAGE ANIMATION */
+.page {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: all 0.6s ease;
+}
+.page.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.love-container{display:flex;gap:40px;padding:50px}
+.intro-image{max-width:350px;border-radius:10px;animation: pop 1s ease}
+
+@keyframes pop{
+  0%{transform:scale(0.8);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
+
+.buttons{display:grid;grid-template-columns:repeat(4,65px);gap:5px; justify-content: center;}
+.buttons button{
+  height:60px;border-radius:50%;
+  background: #faaff0; color: #000; font-size: 18px; font-weight: bold;
+  border: 2px solid #fff;
+  transition:0.2s;
+}
+.buttons button:hover{transform:scale(1.1)}
+
+.next-container,.yes-container,.gift-container{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;gap:30px;text-align:center
+}
+
+.button-group{display:flex;gap:20px}
+button{
+  cursor:pointer;padding:10px 20px;border:none;border-radius:6px;color:white;
+  transition:0.3s;
+}
+button:hover{transform:scale(1.1);box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+
+.yes-button{background:#49e0d9}
+.no-button{background:#f46f36}
+.back-button{background:#999}
+.next{background:#000}
+.reset{background:#f0a0a0}
+
+/* GIFTS */
+.gifts{display:flex;gap:30px}
+.gift-box{
+  width:120px;height:120px;background:#4da6ff;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;cursor:pointer;
+  transition:0.4s;
+}
+.gift-box:hover{
+  transform:translateY(-10px) scale(1.1) rotate(3deg);
+}
+
+.gallery img{
+  width:200px;margin:10px;border-radius:10px;
+  transition:0.4s;
+}
+.gallery img:hover{
+  transform:scale(1.1) rotate(2deg);
+}
+
+@media (max-width: 768px) {
+  .love-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  .intro-image {
+    max-width: 100%;
+  }
+  .buttons {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .buttons button {
+    height: 50px;
+    width: 50px;
+    font-size: 16px;
+  }
+  .next-container, .yes-container, .gift-container {
+    padding: 20px;
+    gap: 20px;
+  }
+  .gifts {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .gallery img {
+    width: 150px;
+  }
+  video {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+let page='love';
+let password="";
+
+function render(){
+const app=document.getElementById('app');
+
+let content = '';
+
+if(page==='love'){
+content=`<div class='page love-container'>
+<img class='intro-image' src='./intro.jpg'/>
+<div>
+<h3>Enter Password</h3>
+<div class='buttons'>
+${[0,1,2,3].map(i=>`<button>${password[i]||''}</button>`).join('')}
+${['1','2','3','4','5','6','7','8','9','*','0','#'].map(n=>`<button onclick="add('${n}')">${n}</button>`).join('')}
+</div>
+${password==='2055'?`<button class='next' onclick="go('next')">Next</button>`:''}
+${password?`<button class='reset' onclick="resetPass()">Reset</button>`:''}
+</div></div>`}
+
+if(page==='next'){
+content=`<div class='page next-container'>
+<h2>Are you ready for your surprise? 🎁</h2>
+<video width="400" controls autoplay>
+<source src="https://www.w3schools.com/html/mov_bbb.mp4">
+</video>
+<div class='button-group'>
+<button class='yes-button' onclick="go('gifts')">Yes</button>
+<button class='no-button' onclick="go('no')">No</button>
+</div></div>`}
+
+if(page==='no'){
+content=`<div class='page next-container'>
+<h2>How Dare You To Say No 😠</h2>
+<video width="400" controls autoplay>
+<source src="./hulk.mp4">
+</video>
+<button class='no-button' onclick="go('next')">Back</button>
+</div>`}
+
+if(page==='gifts'){
+content=`<div class='page gift-container'>
+<h2>Gift for you 🎁</h2>
+<p>Click any gift</p>
+<div class='gifts'>
+<div class='gift-box' onclick="go('letter')">💌</div>
+<div class='gift-box' onclick="go('gallery')">📸</div>
+</div></div>`}
+
+if(page==='letter'){
+content=`<div class='page yes-container'>
+<h2>For You ❤️</h2>
+<p style='max-width:400px'>Some journeys aren’t just about places ✈️🌄,
+they’re about the laughter we carry back 😄💫.
+
+That trip wasn’t just days on a calendar 🗓️,
+it was moments stitched into memories 🧵✨ —
+shared smiles 😊, endless talks 🗣️,
+and the kind of happiness that only family brings 👨‍👩‍👧‍👦❤️.
+
+With every step 🚶‍♂️, we grew closer 🤝,
+with every laugh 😂, a bond got stronger 💞.
+
+If life is a long road 🛣️,
+I’m grateful I got to live these beautiful moments with all of you ❤️
+
+
+</p>
+<video width='300' controls>
+<source src='./inshot.mp4'>
+</video>
+<button class='back-button' onclick="go('gifts')">Back</button>
+</div>`}
+
+if(page==='gallery'){
+content=`<div class='page yes-container'>
+<h2>Memories 📸</h2>
+<div class='gallery'>
+<img src='./1.jpeg'>
+<img src='./2.jpeg'>
+<img src='./3.jpeg'>
+<img src='./4.jpeg'>
+<img src='./5.jpeg'>
+<img src='./6.jpeg'>
+<img src='./7.jpeg'>
+<img src='./8.jpeg'>
+<img src='./9.jpeg'>
+<img src='./10.jpeg'>
+<img src='./11.jpeg'>
+<img src='./12.jpeg'>
+<img src='./13.jpeg'>
+<img src='./14.jpeg'>
+<img src='./15.jpeg'>
+</div>
+<button class='back-button' onclick="go('gifts')">Back</button>
+</div>`}
+
+app.innerHTML = content;
+
+// trigger animation
+setTimeout(()=>{
+  const pageEl = document.querySelector('.page');
+  if(pageEl) pageEl.classList.add('show');
+},50);
+}
+
+function add(n){if(password.length<4){password+=n;render()}}
+function resetPass(){password="";render()}
+function go(p){page=p;render()}
+
+render();
+</script>
+
+</body>
+</html>
